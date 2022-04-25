@@ -1,5 +1,3 @@
-source ~/.bash-scripts/gh-completion.sh
-
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
@@ -10,100 +8,17 @@ case $- in
       *) return;;
 esac
 
-# don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
-HISTCONTROL=ignoreboth
+# imports history config
+source ~/.bash/history.sh
 
-# append to the history file, don't overwrite it
-shopt -s histappend
+# import miscellaneous config
+source ~/.bash/misc.sh
 
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
+# imports color config
+source ~/.bash/colors.sh
 
-# check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
-shopt -s checkwinsize
-
-# If set, the pattern "**" used in a pathname expansion context will
-# match all files and zero or more directories and subdirectories.
-#shopt -s globstar
-
-# make less more friendly for non-text input files, see lesspipe(1)
-[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
-
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
-fi
-
-# set a fancy prompt (non-color, unless we know we "want" color)
-case "$TERM" in
-    xterm-color|*-256color) color_prompt=yes;;
-esac
-
-# uncomment for a colored prompt, if the terminal has the capability; turned
-# off by default to not distract the user: the focus in a terminal window
-# should be on the output of commands, not on the prompt
-#force_color_prompt=yes
-
-if [ -n "$force_color_prompt" ]; then
-    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
-	color_prompt=yes
-    else
-	color_prompt=
-    fi
-fi
-
-if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-fi
-unset color_prompt force_color_prompt
-
-# If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-    ;;
-*)
-    ;;
-esac
-
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
-
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-fi
-
-# colored GCC warnings and errors
-#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
-# some more ls aliases
-alias la='ls -A'
-
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
-# Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
+# imports aliases config
+source ~/.bash/aliases.sh
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -116,92 +31,11 @@ if ! shopt -oq posix; then
   fi
 fi
 
-git_branch() {
-  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
-}
+# imports completions
+source ~/.bash/completion/gh.sh
 
-fileAmount() {
-  ls -1 | wc -l | sed 's: ::g'
-}
+# imports prompt styles
+source ~/.bash/prompt-styles.sh
 
-dirSize() {
-  ls -lah | grep -m 1 total | sed 's/total //'
-}
-
-battery() {
-  cat /sys/class/power_supply/BAT0/capacity
-}
-
-mkcd() {
-  mkdir "$1" && cd "$1"
-}
-
-length() {
-  expr length "$1"
-}
-
-# text styling
-
-underline() {
-  tput smul
-}
-
-bold() {
-  tput bold
-}
-
-blink() {
-  tput blink
-}
-
-dim() {
-  tput dim
-}
-
-# tput bold – Set bold mode
-# tput dim – turn on half-bright mode
-# tput smul – begin underline mode
-# tput rmul – exit underline mode
-# tput rev – Turn on reverse mode
-# tput smso – Enter standout mode (bold on rxvt)
-# tput rmso – Exit standout mode
-# tput sgr0 – Turn off all attributes
-
-bgc() {
-  tput setab $1
-}
-
-fgc() {
-  tput setaf $1
-}
-
-bold() {
-  tput bold
-}
-
-underline() {
-  tput smul
-}
-
-reset() {
-  tput sgr0
-}
-
-execStatus() {
-  if [ \$? = 0 ];
-    then printf "$(fgc 1)×$(reset)";
-  else
-    printf "$(fgc 2)✓$(reset)";
-  fi
-}
-
-prompt1="\n \[$(fgc 0 && bgc 5)\] \W \[$(reset)\] - "
-prompt7="\n \[$(bgc 5 && fgc 0 && bold)\] \u \[$(reset && bgc 2 && fgc 5)\]◤\[$(fgc 0 && bgc 2)\] \W \[$(bgc 4 && fgc 2)\]◤\[$(fgc 0 && bgc 4)\] \$(fileAmount) items \[$(reset)\] - "
-prompt2="\n \[\e[0;33m\]◢\[\e[43;30m\] \W \[\e[0;33m\]◤\[\e[0m\] \[\e[34m\]➜\[\e[0m\]  "
-prompt3="\n ╭  \[\e[35m\]$(bold)\W$(reset) \[\e[34m\]・\[\e[0m\] \[\e[33m\]$(bold)\$(fileAmount)$(reset)\[\e[0m\] files → \[\e[33m\]$(bold)$(dirSize)B$(reset)\[\e[0m\] \[\e[34m\]・\[\e[0m\] \[\e[32m\]$(bold)$(battery)%$(reset)\[\e[0m\]\n │\n ╰  "
-prompt4="\n \[\e[0;33m\]◢\[\e[43;30m\] \h \[\e[44;33m\]◤\[\e[44;30m\] \u \[\e[45;34m\]◤\[\e[45;30m\] \W \[\e[47;35m\]◤\[\e[47;30m\] $(git_branch) \[\e[0;37m\]◤\[\e[0m\] "
-prompt5="╭ \w\n├ \u ─ \A\n│\n╰ "
-prompt6="\[\033[00m\] \n\[\033[30;45m\] \T \[\033[00m\]\[\033[30;46m\] \h@\u \[\033[00m\]\[\033[37;44m\] \w \[\033[1;00m\] "
-
-PS1=$prompt7
-
+# import init sequence
+source ~/.bash/init-sequence.sh
