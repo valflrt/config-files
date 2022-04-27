@@ -1,2 +1,2 @@
 # init sequence
-clear && keqing
+clear # && keqing
