@@ -18,21 +18,10 @@ source ~/.bash/misc.sh
 source ~/.bash/colors.sh
 
 # imports aliases config
-source ~/.bash/aliases.sh
+source ~/.bash/functions-and-aliases.sh
 
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
-if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
-fi
-
-# imports completions
-source ~/.bash/completion/gh.sh
+# imports completion
+source ~/.bash/completion/index.sh
 
 # imports prompt styles
 source ~/.bash/prompt-styles.sh
