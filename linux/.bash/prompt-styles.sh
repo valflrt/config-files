@@ -14,10 +14,6 @@ battery() {
     cat /sys/class/power_supply/BAT0/capacity
 }
 
-mkcd() {
-    mkdir "$1" && cd "$1"
-}
-
 length() {
     expr length "$1"
 }
