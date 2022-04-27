@@ -74,5 +74,5 @@ transparency=90
 [style/font]
 allow-bold=true
 bold-is-bright=false
-palette='#191919191919:#f3f300005f5f:#9797e0e02323:#fafa84841919:#9c9c6464fefe:#f3f300005f5f:#5757d1d1eaea:#c4c4c4c4b5b5:#61615e5e4b4b:#f3f300005f5f:#9797e0e02323:#dfdfd5d56161:#9c9c6464fefe:#f3f300005f5f:#5757d1d1eaea:#f6f6f6f6eeee:#f3f3f3f3f3f3:#191919191919'
-palette-name='valflrt'
+palette='#191919191919:#f3f300005f5f:#9797e0e02323:#fafa84841919:#9c9c6464fefe:#f3f300005f5f:#5757d1d1eaea:#c4c4c4c4b5b5:#61615e5e4b4b:#f5c14dd28f79:#b7f7eb84660e:#dfdfd5d56161:#b3ee8c5df92b:#f5c14dd28f79:#86e8dc87ee13:#f6f6f6f6eeee:#f3f3f3f3f3f3:#191919191919'
+palette-name='Custom'
