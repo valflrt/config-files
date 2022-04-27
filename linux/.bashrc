@@ -21,7 +21,7 @@ source ~/.bash/colors.sh
 source ~/.bash/functions-and-aliases.sh
 
 # imports completion
-source ~/.bash/completion/index.sh
+source ~/.bash/completion.sh
 
 # imports prompt styles
 source ~/.bash/prompt-styles.sh
