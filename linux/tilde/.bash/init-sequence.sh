@@ -1,5 +1,5 @@
 # init sequence
-clear && neofetch --disable DE WM WM_Theme Theme Term --off
+clear && neofetch --disable DE WM WM_Theme Theme Term Uptime Memory --off
 
 : << "COMMENT"
 Other sequences:
